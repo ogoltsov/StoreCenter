@@ -16,6 +16,10 @@ public class User extends BaseEntity {
         super(id, isDeleted);
     }
 
+    public User() {
+        super();
+    }
+
     public String getEmail() {
         return email;
     }

@@ -15,6 +15,10 @@ public class BaseEntity {
         this.isDeleted = isDeleted;
     }
 
+    public BaseEntity() {
+
+    }
+
     public Integer getId() {
         return id;
     }
