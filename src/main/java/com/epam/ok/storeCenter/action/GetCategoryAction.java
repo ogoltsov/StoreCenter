@@ -6,13 +6,12 @@ import com.epam.ok.storeCenter.service.ServiceException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.List;
 
 public class GetCategoryAction implements Action {
     @Override
     public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
-        ActionResult result = null;
+        ActionResult result;
         String id = request.getParameter("id");
         CategoryService service = new CategoryService();
         if (id == null) {
@@ -25,13 +24,13 @@ public class GetCategoryAction implements Action {
             }
         } else {
             try {
-                response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            } catch (IOException e) {
+                Category category = service.getByPK(Integer.parseInt(id));
+                request.setAttribute("category", category);
+                result = new ActionResult("category");
+            } catch (ServiceException e) {
                 throw new ActionException();
             }
         }
-
-
         return result;
     }
 }

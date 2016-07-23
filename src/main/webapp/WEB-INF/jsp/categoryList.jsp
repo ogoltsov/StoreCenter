@@ -22,7 +22,7 @@
                     <td>${categoty.title}</td>
                     <td>${categoty.description}</td>
                     <c:if test="${loggedUser.role.toString()!='user'}">
-                        <td><a href="#">Edit</a></td>
+                        <td><a href="${pageContext.request.contextPath}/app/category?id=${categoty.id}">Edit</a></td>
                     </c:if>
                 </tr>
             </c:forEach>
