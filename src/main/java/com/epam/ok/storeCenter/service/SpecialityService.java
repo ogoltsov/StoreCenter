@@ -26,4 +26,12 @@ public class SpecialityService {
         return specialityList;
     }
 
+    public Speciality getByPK(int id) throws ServiceException {
+       try (DaoFactory daoFactory = new JdbcDaoFactory()) {
+           GenericDao<Speciality> dao = daoFactory.getDao(Speciality.class);
+           return dao.findByPK(id);
+       } catch (DaoException e) {
+           throw new ServiceException();
+       }
+    }
 }

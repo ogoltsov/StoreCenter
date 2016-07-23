@@ -15,9 +15,9 @@ public class GetSpecialityAction implements Action {
 
         String id = request.getParameter("id");
 
+        SpecialityService service = new SpecialityService();
         if (id == null) {
 
-            SpecialityService service = new SpecialityService();
             try {
                 List<Speciality> specialityList = service.getAll();
                 request.setAttribute("specialityList", specialityList);
@@ -26,7 +26,17 @@ public class GetSpecialityAction implements Action {
                 throw new ActionException();
             }
 
-        } else result = null;
+        } else {
+            Speciality speciality = null;
+            try {
+                speciality = service.getByPK(Integer.parseInt(id));
+            } catch (ServiceException e) {
+                throw new ActionException();
+            }
+
+            request.setAttribute("speciality",speciality);
+            result = new ActionResult("speciality");
+        }
 
 
         return result;

@@ -23,7 +23,7 @@
                     <td>${speciality.code}</td>
                     <td>${speciality.title}</td>
                     <c:if test="${loggedUser.role.toString()!='user'}">
-                        <td><a href="#">Edit</a></td>
+                        <td><a href="${pageContext.request.contextPath}/app/speciality?id=${speciality.id}">Edit</a></td>
                     </c:if>
                 </tr>
             </c:forEach>
