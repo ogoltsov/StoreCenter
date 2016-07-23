@@ -1,7 +1,9 @@
-package com.epam.ok.storeCenter.dao;
+package com.epam.ok.storeCenter.dao.jdbc;
 
+import com.epam.ok.storeCenter.dao.DaoException;
+import com.epam.ok.storeCenter.dao.DaoFactory;
+import com.epam.ok.storeCenter.dao.GenericDao;
 import com.epam.ok.storeCenter.model.BaseEntity;
-import com.epam.ok.storeCenter.model.User;
 import com.epam.ok.storeCenter.pool.ConnectionPool;
 
 import javax.sql.DataSource;
@@ -39,6 +41,13 @@ public class JdbcDaoFactory extends DaoFactory {
 
     @Override
     public void close() throws DaoException {
+        try {
+            this.connection.setAutoCommit(true);
+            this.connection.close();
+
+        } catch (SQLException e) {
+            throw new DaoException();
+        }
 
     }
 

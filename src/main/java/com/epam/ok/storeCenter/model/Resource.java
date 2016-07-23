@@ -1,20 +1,18 @@
 package com.epam.ok.storeCenter.model;
 
-import java.time.LocalDate;
+import java.sql.Date;
 import java.util.List;
 
 public class Resource extends BaseEntity {
     private String title;
     private Category category;
     private Status status;
-    private LocalDate date;
+    private Date date;
     private List<Author> authors;
     private List<Speciality> specialities;
-
     public Resource(Integer id) {
         super(id);
     }
-
     public Resource(Integer id, String title) {
         super(id);
         this.title = title;
@@ -23,6 +21,18 @@ public class Resource extends BaseEntity {
     public Resource(Integer id, boolean isDeleted, String title) {
         super(id, isDeleted);
         this.title = title;
+    }
+
+    public Resource() {
+
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public String getTitle() {
@@ -47,14 +57,6 @@ public class Resource extends BaseEntity {
 
     public void setStatus(Status status) {
         this.status = status;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
     }
 
     public List<Author> getAuthors() {

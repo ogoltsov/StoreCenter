@@ -15,6 +15,10 @@ public class Speciality extends BaseEntity {
         this.code = code;
     }
 
+    public Speciality() {
+
+    }
+
     public String getCode() {
         return code;
     }

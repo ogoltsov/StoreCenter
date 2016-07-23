@@ -11,6 +11,9 @@ public class Author extends BaseEntity {
         super(id);
     }
 
+    public Author() {
+    }
+
     public String getFirstname() {
         return firstname;
     }

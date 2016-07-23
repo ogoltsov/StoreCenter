@@ -1,5 +1,6 @@
 package com.epam.ok.storeCenter.dao;
 
+import com.epam.ok.storeCenter.dao.jdbc.JdbcDaoFactory;
 import com.epam.ok.storeCenter.model.BaseEntity;
 
 public abstract class DaoFactory implements AutoCloseable {
@@ -24,4 +25,5 @@ public abstract class DaoFactory implements AutoCloseable {
     public abstract void commitTransaction() throws DaoException;
 
     public abstract void rollbackTransaction() throws DaoException;
+
 }

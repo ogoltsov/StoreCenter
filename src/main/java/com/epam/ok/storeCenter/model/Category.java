@@ -2,27 +2,37 @@ package com.epam.ok.storeCenter.model;
 
 public class Category extends BaseEntity {
 
-    private String title;
+    private String description;
 
     public Category(Integer id) {
         super(id);
     }
 
     public Category(Integer id, String title) {
-        super(id);
-        this.title = title;
+        super(id, title);
     }
 
     public Category(Integer id, boolean isDeleted, String title) {
-        super(id, isDeleted);
-        this.title = title;
+        super(id, title, isDeleted);
+    }
+
+    public Category() {
+        super();
     }
 
     public String getTitle() {
-        return title;
+        return super.getTitle();
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        super.setTitle(title);
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

@@ -1,5 +1,8 @@
 package com.epam.ok.storeCenter.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User extends BaseEntity {
 
     private String email;
@@ -61,6 +64,14 @@ public class User extends BaseEntity {
     }
 
     public enum Role {
-        user, admin
+        user, moderator, guest, admin;
+
+        public static List<Role> getRoles() {
+            List<Role> roles = new ArrayList<>();
+            roles.add(user);
+            roles.add(moderator);
+
+            return roles;
+        }
     }
 }

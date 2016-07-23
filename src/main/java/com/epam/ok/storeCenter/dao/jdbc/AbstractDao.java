@@ -1,5 +1,7 @@
-package com.epam.ok.storeCenter.dao;
+package com.epam.ok.storeCenter.dao.jdbc;
 
+import com.epam.ok.storeCenter.dao.DaoException;
+import com.epam.ok.storeCenter.dao.GenericDao;
 import com.epam.ok.storeCenter.model.BaseEntity;
 
 import java.sql.*;
@@ -10,7 +12,7 @@ import java.util.Map;
 public abstract class AbstractDao<T extends BaseEntity> implements GenericDao<T> {
 
     private static final String SELECT_FROM = "SELECT * FROM ";
-    private static final String WHERE_ID = "WHERE id = ";
+    private static final String WHERE_ID = " WHERE id = ";
 
     protected Connection connection;
 
@@ -22,7 +24,7 @@ public abstract class AbstractDao<T extends BaseEntity> implements GenericDao<T>
 
     protected abstract T getObjectFromResultSet(ResultSet rs) throws DaoException;
 
-    protected abstract void setVariablesForPreparedStatementExceptId(T t, PreparedStatement ps);
+    protected abstract void setVariablesForPreparedStatementExceptId(T t, PreparedStatement ps) throws DaoException;
 
     @Override
     public T insert(T t) throws DaoException {
@@ -32,7 +34,7 @@ public abstract class AbstractDao<T extends BaseEntity> implements GenericDao<T>
             ResultSet rs = ps.getGeneratedKeys();
             rs.next();
             t.setId(rs.getInt(1));
-//            logger.debug("{} inserted", t);
+            t.setDeleted(false);
         } catch (SQLException e) {
             throw new DaoException("Could not insert Object to db", e);
         }
@@ -41,14 +43,16 @@ public abstract class AbstractDao<T extends BaseEntity> implements GenericDao<T>
 
     @Override
     public T findByPK(Integer id) throws DaoException {
+        T object;
         try (Statement st = connection.createStatement()) {
             ResultSet rs = st.executeQuery(SELECT_FROM + getTableName() + WHERE_ID + id);
             rs.next();
-            T object = getObjectFromResultSet(rs);
-            return object;
+            object = getObjectFromResultSet(rs);
+
         } catch (SQLException e) {
             throw new DaoException();
         }
+        return object;
     }
 
     @Override
@@ -59,7 +63,6 @@ public abstract class AbstractDao<T extends BaseEntity> implements GenericDao<T>
             while (rs.next()) {
                 objects.add(getObjectFromResultSet(rs));
             }
-//            logger.debug("Get entity list by current params: {} - {}", params, objects);
         } catch (SQLException e) {
             throw new DaoException("Could not find object with this params", e);
         }
@@ -67,7 +70,7 @@ public abstract class AbstractDao<T extends BaseEntity> implements GenericDao<T>
     }
 
     private String getQueryToFindAllByParams(Map<String, String> params) {
-        String query = SELECT_FROM + getTableName() + "WHERE ";
+        String query = SELECT_FROM + getTableName() + " WHERE ";
         for (Map.Entry<String, String> param : params.entrySet()) {
             if (params.size() == 1) {
                 query += param.getKey() + " = '" + param.getValue() + "'";
