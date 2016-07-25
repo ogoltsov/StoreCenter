@@ -1,6 +1,5 @@
 package com.epam.ok.storeCenter.action;
 
-import com.epam.ok.storeCenter.Validator;
 import com.epam.ok.storeCenter.model.User;
 import com.epam.ok.storeCenter.service.ServiceException;
 import com.epam.ok.storeCenter.service.UserService;
@@ -22,14 +21,11 @@ class GetUserAction implements Action {
                 request.setAttribute("userList", userList);
                 result = new View("userList");
             } else {
-                if (!isValid(id)) {
-                    throw new IllegalArgumentException("Illegal argument");
-                } else {
-                    User user = service.getByPK(Integer.parseInt(id));
-                    request.setAttribute("user", user);
-                    request.setAttribute("roles", User.Role.getRoles());
-                    result = new View("user");
-                }
+
+                User user = service.getByPK(Integer.parseInt(id));
+                request.setAttribute("user", user);
+                request.setAttribute("roles", User.Role.getRoles());
+                result = new View("user");
             }
         } catch (ServiceException e) {
             throw new ActionException("Could not execute GetUserAction", e);
@@ -38,7 +34,4 @@ class GetUserAction implements Action {
         return result;
     }
 
-    private boolean isValid(String id) {
-        return ActionUtil.isValide(id, Validator.NOT_EMPTY_NUMBER);
-    }
 }

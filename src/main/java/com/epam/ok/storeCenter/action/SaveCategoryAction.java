@@ -1,6 +1,5 @@
 package com.epam.ok.storeCenter.action;
 
-import com.epam.ok.storeCenter.Validator;
 import com.epam.ok.storeCenter.model.Category;
 import com.epam.ok.storeCenter.service.CategoryService;
 import com.epam.ok.storeCenter.service.ServiceException;
@@ -19,14 +18,9 @@ class SaveCategoryAction implements Action {
         CategoryService service = new CategoryService();
         Category category = new Category();
 
-        if (isValidate(id, Validator.NOT_EMPTY_NUMBER) && isValidate(title, Validator.NOT_EMPTY_TEXT) &&
-                isValidate(description, Validator.NOT_EMPTY_TEXT)) {
-            category.setId(id.equals("") ? null : Integer.parseInt(id));
-            category.setTitle(title);
-            category.setDescription(description);
-        } else {
-            return forwardBackWithError(request, category);
-        }
+        category.setId(id.equals("") ? null : Integer.parseInt(id));
+        category.setTitle(title);
+        category.setDescription(description);
 
         try {
             Category foundedCategory = service.getByTitle(title);
@@ -43,10 +37,6 @@ class SaveCategoryAction implements Action {
         }
     }
 
-    private boolean isValidate(String param, String regEx) {
-        Validator validator = new Validator();
-        return validator.validate(param, regEx);
-    }
 
     private View forwardBackWithError(HttpServletRequest request, Category category) {
         request.setAttribute("category", category);

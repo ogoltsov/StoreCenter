@@ -1,6 +1,5 @@
 package com.epam.ok.storeCenter.action;
 
-import com.epam.ok.storeCenter.Validator;
 import com.epam.ok.storeCenter.model.Category;
 import com.epam.ok.storeCenter.service.CategoryService;
 import com.epam.ok.storeCenter.service.ServiceException;
@@ -26,14 +25,11 @@ class GetCategoryAction implements Action {
             }
         } else {
             try {
-                if (isValid(id)) {
-                    Category category = service.getByPK(Integer.parseInt(id));
-                    request.setAttribute("category", category);
-                    result = new View("category");
 
-                } else {
-                    result = new View("category", true);
-                }
+                Category category = service.getByPK(Integer.parseInt(id));
+                request.setAttribute("category", category);
+                result = new View("category");
+
             } catch (ServiceException e) {
                 throw new ActionException("Could not get Category, id: " + id, e);
             }
@@ -42,7 +38,4 @@ class GetCategoryAction implements Action {
         return result;
     }
 
-    private boolean isValid(String id) {
-        return ActionUtil.isValide(id, Validator.NOT_EMPTY_NUMBER);
-    }
 }

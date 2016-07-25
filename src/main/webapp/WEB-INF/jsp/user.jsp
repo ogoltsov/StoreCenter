@@ -15,7 +15,7 @@
                 <jsp:useBean id="user" class="com.epam.ok.storeCenter.model.User" scope="request"/>
                 <!-- Text input-->
 
-                <div class="form-group">
+                <div class="form-group" hidden>
                     <label class="col-md-4 control-label" for="id">ID</label>
                     <div class="col-md-5">
                         <input id="id" name="id" type="text" class="form-control input-md"
@@ -56,13 +56,6 @@
                     <div class="col-md-5">
                         <input id="firstname" name="firstname" type="text" placeholder="Firstname"
                                class="form-control input-md" required value="${user.firstname}">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="isDelete">Deleted</label>
-                    <div class="col-md-5">
-                        <p class="form-control-static" id="isDelete">${user.deleted}</p>
                     </div>
                 </div>
 

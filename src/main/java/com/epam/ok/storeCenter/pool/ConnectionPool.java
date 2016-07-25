@@ -23,7 +23,7 @@ public class ConnectionPool implements DataSource {
     private String password;
     private int connectionsLimit;
     private int timeout;
-    private BlockingQueue<PooledConnection> freeConnections;
+    private volatile BlockingQueue<PooledConnection> freeConnections;
     private BlockingQueue<PooledConnection> usedConnections;
 
     private ConnectionPool() throws ConnectionPoolException {
@@ -67,8 +67,12 @@ public class ConnectionPool implements DataSource {
     }
 
     private void initConnections() {
-        if (freeConnections == null)
-            freeConnections = new ArrayBlockingQueue<>(connectionsLimit);
+        if (freeConnections == null){
+            synchronized (ConnectionPool.class){
+                if(freeConnections==null){
+            freeConnections = new ArrayBlockingQueue<>(connectionsLimit);}
+        }
+        }
         try {
             Class.forName(driver);
             for (int i = 0; i < connectionsLimit; i++) {

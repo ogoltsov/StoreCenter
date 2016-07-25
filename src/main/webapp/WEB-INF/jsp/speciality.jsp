@@ -12,7 +12,7 @@
             <fieldset>
                 <legend>Edit Speciality</legend>
 
-                <div class="form-group">
+                <div class="form-group" hidden>
                     <label class="col-md-4 control-label" for="textinput">ID</label>
                     <div class="col-md-5">
                         <input id="textinput" name="id" type="text" placeholder="ID"
@@ -36,20 +36,6 @@
                         <input id="code" name="code" type="text" placeholder="Code" class="form-control input-md"
                                required="" value="${speciality.code}">
 
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="col-md-4 control-label">Delete</label>
-                    <div class="col-md-5">
-                        <c:choose>
-                            <c:when test="${speciality.deleted}">
-                                <p class="form-control-static">True</p>
-                            </c:when>
-                            <c:otherwise>
-                                <p class="form-control-static">False</p>
-                            </c:otherwise>
-                        </c:choose>
                     </div>
                 </div>
 

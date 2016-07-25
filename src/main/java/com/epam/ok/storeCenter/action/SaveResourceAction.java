@@ -1,6 +1,5 @@
 package com.epam.ok.storeCenter.action;
 
-import com.epam.ok.storeCenter.Validator;
 import com.epam.ok.storeCenter.model.Category;
 import com.epam.ok.storeCenter.model.Resource;
 import com.epam.ok.storeCenter.model.Status;
@@ -38,25 +37,21 @@ class SaveResourceAction implements Action {
 
         Resource resource = new Resource();
         try {
-            if (isValidate(id, Validator.NOT_EMPTY_NUMBER) && isValidate(title, Validator.NOT_EMPTY_TEXT) && isValidate(statusId, Validator.NOT_EMPTY_NUMBER) &&
-                    isValidate(categoryId, Validator.NOT_EMPTY_NUMBER)) {
-                resource.setId(id.equals("") ? null : Integer.parseInt(id));
-                resource.setTitle(title);
-                resource.setCategory(new Category(Integer.parseInt(categoryId)));
-                resource.setStatus(new Status(Integer.parseInt(statusId)));
-                resource.setDate(getDate(date));
+            resource.setId(id.equals("") ? null : Integer.parseInt(id));
+            resource.setTitle(title);
+            resource.setCategory(new Category(Integer.parseInt(categoryId)));
+            resource.setStatus(new Status(Integer.parseInt(statusId)));
+            resource.setDate(getDate(date));
 
-                Resource foundedResource = service.getByParams(params);
+            Resource foundedResource = service.getByParams(params);
 
-                if ((foundedResource == null) || (Objects.equals(foundedResource.getId(), resource.getId()))) {
-                    service.save(resource);
-                    return new View("resource", true);
-                } else {
-                    return forwardBackWithError(request, resource);
-                }
+            if ((foundedResource == null) || (Objects.equals(foundedResource.getId(), resource.getId()))) {
+                service.save(resource);
+                return new View("resource", true);
             } else {
                 return forwardBackWithError(request, resource);
             }
+
         } catch (ServiceException e) {
             throw new ActionException("Could not save Resource", e);
         }
@@ -81,8 +76,5 @@ class SaveResourceAction implements Action {
         return formatter.parseDateTime(date);
     }
 
-    private boolean isValidate(String param, String regEx) {
-        Validator validator = new Validator();
-        return validator.validate(param, regEx);
-    }
+
 }

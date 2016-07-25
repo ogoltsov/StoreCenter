@@ -22,12 +22,12 @@ class DeleteSpecialityAction implements Action {
             } else {
                 request.setAttribute("deleteError", "You can't delete this");
                 request.setAttribute("id", id);
-                request.setAttribute("speciality",service.getByPK(Integer.parseInt(id)));
+                request.setAttribute("speciality", service.getByPK(Integer.parseInt(id)));
                 return new View("speciality");
             }
 
         } catch (ServiceException e) {
-            throw new ActionException("Could not delete Speciality, id: "+ id, e);
+            throw new ActionException("Could not delete Speciality, id: " + id, e);
         }
 
     }

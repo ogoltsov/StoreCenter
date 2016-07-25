@@ -1,6 +1,5 @@
 package com.epam.ok.storeCenter.action;
 
-import com.epam.ok.storeCenter.Validator;
 import com.epam.ok.storeCenter.model.Author;
 import com.epam.ok.storeCenter.model.Resource;
 import com.epam.ok.storeCenter.service.AuthorService;
@@ -17,36 +16,31 @@ class DeleteAuthorAction implements Action {
         String id = request.getParameter("id");
 
         AuthorService service = new AuthorService();
-        if (!isValid(id)) {
-            throw new IllegalArgumentException("Illegal argument");
-        } else {
-            try {
-                boolean canDelete = service.canDelete(Integer.parseInt(id));
-                if (canDelete) {
-                    service.delete(Integer.parseInt(id));
-                    return new View("author", true);
-                } else {
-                    Author author = new Author();
-                    author.setId(Integer.parseInt(id));
-                    author.setLastname(request.getParameter("lastname"));
-                    author.setFirstname(request.getParameter("firstname"));
-                    author.setPatronymic(request.getParameter("patronymic"));
 
-                    List<Resource> resources = service.getResourcesForAuthor(Integer.parseInt(id));
+        try {
+            boolean canDelete = service.canDelete(Integer.parseInt(id));
+            if (canDelete) {
+                service.delete(Integer.parseInt(id));
+                return new View("author", true);
+            } else {
+                Author author = new Author();
+                author.setId(Integer.parseInt(id));
+                author.setLastname(request.getParameter("lastname"));
+                author.setFirstname(request.getParameter("firstname"));
+                author.setPatronymic(request.getParameter("patronymic"));
 
-                    request.setAttribute("author", author);
-                    request.setAttribute("resources", resources);
-                    request.setAttribute("error", "Sorry, You can't delete this :(");
-                    return new View("author");
+                List<Resource> resources = service.getResourcesForAuthor(Integer.parseInt(id));
 
-                }
-            } catch (ServiceException e) {
-                throw new ActionException("Could not delete Author, id: " + id, e);
+                request.setAttribute("author", author);
+                request.setAttribute("resources", resources);
+                request.setAttribute("error", "Sorry, You can't delete this :(");
+                return new View("author");
+
             }
+        } catch (ServiceException e) {
+            throw new ActionException("Could not delete Author, id: " + id, e);
         }
+
     }
 
-    private boolean isValid(String id) {
-        return ActionUtil.isValide(id, Validator.NOT_EMPTY_NUMBER);
-    }
 }

@@ -1,6 +1,5 @@
 package com.epam.ok.storeCenter.action;
 
-import com.epam.ok.storeCenter.Validator;
 import com.epam.ok.storeCenter.model.ResourceAuthor;
 import com.epam.ok.storeCenter.service.ResourceService;
 import com.epam.ok.storeCenter.service.ServiceException;
@@ -14,25 +13,19 @@ class RemoveAuthorFromResourceAction implements Action {
         String resId = request.getParameter("resId");
         String authorId = request.getParameter("authorId");
 
-        if (isValidate(resId) && isValidate(authorId)) {
-            ResourceService service = new ResourceService();
-            ResourceAuthor ra = new ResourceAuthor();
-            ra.setAuthorId(Integer.parseInt(authorId));
-            ra.setResourceId(Integer.parseInt(resId));
+        ResourceService service = new ResourceService();
+        ResourceAuthor ra = new ResourceAuthor();
+        ra.setAuthorId(Integer.parseInt(authorId));
+        ra.setResourceId(Integer.parseInt(resId));
 
-            try {
-                service.removeAuthorFromResource(ra);
-                return new View("resource", true);
-            } catch (ServiceException e) {
-                throw new ActionException("Could not remove Author from Resource", e);
-            }
-        } else {
-            throw new IllegalArgumentException("Illegal argument");
+        try {
+            service.removeAuthorFromResource(ra);
+            return new View("resource", true);
+        } catch (ServiceException e) {
+            throw new ActionException("Could not remove Author from Resource", e);
         }
+
     }
 
-    private boolean isValidate(String id) {
-        Validator validator = new Validator();
-        return validator.validate(id, Validator.NOT_EMPTY_NUMBER);
-    }
+
 }

@@ -13,7 +13,7 @@
                         <legend>Edit Resource</legend>
 
                         <!-- Text input-->
-                        <div class="form-group">
+                        <div class="form-group" hidden>
                             <label class="col-md-4 control-label" for="id">ID</label>
                             <div class="col-md-5">
                                 <input id="id" name="id" type="text" placeholder="" class="form-control input-md"

@@ -1,6 +1,5 @@
 package com.epam.ok.storeCenter.action;
 
-import com.epam.ok.storeCenter.Validator;
 import com.epam.ok.storeCenter.dao.DaoException;
 import com.epam.ok.storeCenter.model.Category;
 import com.epam.ok.storeCenter.service.CategoryService;
@@ -15,36 +14,30 @@ class DeleteCategoryAction implements Action {
 
         String id = request.getParameter("id");
 
-        if (!isValid(id)) {
-            throw new IllegalArgumentException("Illegal argument");
-        } else {
-            CategoryService service = new CategoryService();
-            try {
-                boolean canDelete = service.canDelete(Integer.parseInt(id));
-                if (canDelete) {
-                    try {
-                        service.delete(Integer.parseInt(id));
-                        return new View("category", true);
-                    } catch (DaoException e) {
-                        throw new ActionException("Can't execute action " + this.getClass().getName());
-                    }
-                } else {
-                    Category category = new Category();
-                    category.setId(Integer.parseInt(id));
-                    category.setTitle(request.getParameter("title"));
-                    category.setDescription(request.getParameter("description"));
 
-                    request.setAttribute("error", "Sorry, You can't delete this :(");
-                    request.setAttribute("category", category);
-                    return new View("category");
+        CategoryService service = new CategoryService();
+        try {
+            boolean canDelete = service.canDelete(Integer.parseInt(id));
+            if (canDelete) {
+                try {
+                    service.delete(Integer.parseInt(id));
+                    return new View("category", true);
+                } catch (DaoException e) {
+                    throw new ActionException("Can't execute action " + this.getClass().getName());
                 }
-            } catch (ServiceException e) {
-                throw new ActionException("Could not delete Category, id: " + id, e);
-            }
-        }
-    }
+            } else {
+                Category category = new Category();
+                category.setId(Integer.parseInt(id));
+                category.setTitle(request.getParameter("title"));
+                category.setDescription(request.getParameter("description"));
 
-    private boolean isValid(String id) {
-        return ActionUtil.isValide(id, Validator.NOT_EMPTY_NUMBER);
+                request.setAttribute("error", "Sorry, You can't delete this :(");
+                request.setAttribute("category", category);
+                return new View("category");
+            }
+        } catch (ServiceException e) {
+            throw new ActionException("Could not delete Category, id: " + id, e);
+        }
+
     }
 }

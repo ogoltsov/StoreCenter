@@ -1,14 +1,11 @@
 package com.epam.ok.storeCenter.action;
 
-import com.epam.ok.storeCenter.Validator;
 import com.epam.ok.storeCenter.model.User;
 import com.epam.ok.storeCenter.service.ServiceException;
 import com.epam.ok.storeCenter.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import static com.epam.ok.storeCenter.action.ActionUtil.isValide;
 
 class RegisterAction implements Action {
 
@@ -21,10 +18,7 @@ class RegisterAction implements Action {
 
         try {
 
-            boolean isEmailFree = false;
-            if (isValide(request.getParameter("email"), Validator.EMAIL)) {
-                isEmailFree = service.checkEmail(request.getParameter("email"));
-            }
+            boolean isEmailFree = service.checkEmail(user.getEmail());
 
             if (!isEmailFree) {
                 result = forwardToRegisterFormWithError(request, user);

@@ -1,6 +1,5 @@
 package com.epam.ok.storeCenter.action;
 
-import com.epam.ok.storeCenter.Validator;
 import com.epam.ok.storeCenter.model.*;
 import com.epam.ok.storeCenter.service.*;
 
@@ -14,52 +13,47 @@ class GetResourceAction implements Action {
         View result;
 
         String id = request.getParameter("id");
-        if (!isValid(id)) {
-            throw new IllegalArgumentException("Illegal argument");
+
+        ResourceService service = new ResourceService();
+        if (id == null) {
+            try {
+                List<Resource> resources = service.getAll();
+                request.setAttribute("resources", resources);
+            } catch (ServiceException e) {
+                throw new ActionException("Could not get all Resource", e);
+            }
+            result = new View("resourceList");
         } else {
-            ResourceService service = new ResourceService();
-            if (id == null) {
-                try {
-                    List<Resource> resources = service.getAll();
-                    request.setAttribute("resources", resources);
-                } catch (ServiceException e) {
-                    throw new ActionException("Could not get all Resource", e);
-                }
-                result = new View("resourceList");
-            } else {
 
-                try {
-                    Resource resource = service.getByPK(Integer.parseInt(id));
+            try {
+                Resource resource = service.getByPK(Integer.parseInt(id));
 
-                    StatusService statusService = new StatusService();
-                    CategoryService categoryService = new CategoryService();
-                    AuthorService authorService = new AuthorService();
-                    SpecialityService specialityService = new SpecialityService();
+                StatusService statusService = new StatusService();
+                CategoryService categoryService = new CategoryService();
+                AuthorService authorService = new AuthorService();
+                SpecialityService specialityService = new SpecialityService();
 
-                    List<Speciality> specialityList = specialityService.getAll();
-                    List<Author> authorList = authorService.getAll();
-                    List<Status> statusList = statusService.getAll();
-                    List<Category> categoryList = categoryService.getAll();
+                List<Speciality> specialityList = specialityService.getAll();
+                List<Author> authorList = authorService.getAll();
+                List<Status> statusList = statusService.getAll();
+                List<Category> categoryList = categoryService.getAll();
 
-                    specialityList.removeAll(resource.getSpecialities());
-                    authorList.removeAll(resource.getAuthors());
+                specialityList.removeAll(resource.getSpecialities());
+                authorList.removeAll(resource.getAuthors());
 
-                    request.setAttribute("categoryList", categoryList);
-                    request.setAttribute("statusList", statusList);
-                    request.setAttribute("specialityList", specialityList);
-                    request.setAttribute("authorList", authorList);
-                    request.setAttribute("resource", resource);
+                request.setAttribute("categoryList", categoryList);
+                request.setAttribute("statusList", statusList);
+                request.setAttribute("specialityList", specialityList);
+                request.setAttribute("authorList", authorList);
+                request.setAttribute("resource", resource);
 
-                    result = new View("resource");
-                } catch (ServiceException e) {
-                    throw new ActionException("Could not get Resource, id: " + id, e);
-                }
+                result = new View("resource");
+            } catch (ServiceException e) {
+                throw new ActionException("Could not get Resource, id: " + id, e);
             }
         }
+
         return result;
     }
 
-    private boolean isValid(String id) {
-        return ActionUtil.isValide(id, Validator.NOT_EMPTY_NUMBER);
-    }
 }

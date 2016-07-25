@@ -14,10 +14,10 @@
 
                 <legend>Edit Speciality</legend>
 
-                <div class="form-group">
+                <div class="form-group" hidden>
                     <label class="col-md-4 control-label" for="textinput">ID</label>
                     <div class="col-md-5">
-                        <input id="textinput" name="id" type="text" placeholder="ID"
+                        <input id="textinput" name="id" type="text" placeholder="ID" hidden
                                class="form-control input-md" readonly value="${author.id}">
                     </div>
                 </div>

@@ -1,6 +1,5 @@
 package com.epam.ok.storeCenter.action;
 
-import com.epam.ok.storeCenter.Validator;
 import com.epam.ok.storeCenter.model.Speciality;
 import com.epam.ok.storeCenter.service.ServiceException;
 import com.epam.ok.storeCenter.service.SpecialityService;
@@ -15,33 +14,26 @@ class GetSpecialityAction implements Action {
         View result;
 
         String id = request.getParameter("id");
-        if (!isValid(id)) {
-            throw new IllegalArgumentException("Illegal argument");
-        } else {
-            SpecialityService service = new SpecialityService();
-            if (id == null) {
-                try {
-                    List<Speciality> specialityList = service.getAll();
-                    request.setAttribute("specialityList", specialityList);
-                    result = new View("specialityList");
-                } catch (ServiceException e) {
-                    throw new ActionException("Could not get Speciality list", e);
-                }
-            } else {
-                Speciality speciality;
-                try {
-                    speciality = service.getByPK(Integer.parseInt(id));
-                } catch (ServiceException e) {
-                    throw new ActionException("Could not get Speciality, id: " + id, e);
-                }
-                request.setAttribute("speciality", speciality);
-                result = new View("speciality");
+
+        SpecialityService service = new SpecialityService();
+        if (id == null) {
+            try {
+                List<Speciality> specialityList = service.getAll();
+                request.setAttribute("specialityList", specialityList);
+                result = new View("specialityList");
+            } catch (ServiceException e) {
+                throw new ActionException("Could not get Speciality list", e);
             }
+        } else {
+            Speciality speciality;
+            try {
+                speciality = service.getByPK(Integer.parseInt(id));
+            } catch (ServiceException e) {
+                throw new ActionException("Could not get Speciality, id: " + id, e);
+            }
+            request.setAttribute("speciality", speciality);
+            result = new View("speciality");
         }
         return result;
-    }
-
-    private boolean isValid(String id) {
-        return ActionUtil.isValide(id, Validator.NOT_EMPTY_NUMBER);
     }
 }
