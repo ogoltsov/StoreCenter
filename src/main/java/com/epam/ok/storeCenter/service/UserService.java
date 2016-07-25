@@ -6,8 +6,8 @@ import com.epam.ok.storeCenter.dao.GenericDao;
 import com.epam.ok.storeCenter.dao.jdbc.JdbcDaoFactory;
 import com.epam.ok.storeCenter.model.User;
 
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -34,8 +34,8 @@ public class UserService {
         User insertedUser;
         try (DaoFactory jdbcDaoFactory = new JdbcDaoFactory()) {
             GenericDao<User> userDao = jdbcDaoFactory.getDao(User.class);
+            user.setRole(User.Role.user);
             insertedUser = userDao.insert(user);
-            insertedUser.setRole(User.Role.user);
         } catch (DaoException e) {
             throw new ServiceException("Could not read user from db", e);
         }
@@ -45,7 +45,12 @@ public class UserService {
     public boolean checkEmail(String email) throws ServiceException {
         try (DaoFactory jdbcDaoFactory = new JdbcDaoFactory()) {
             GenericDao<User> userDao = jdbcDaoFactory.getDao(User.class);
-            List<User> users = userDao.findAllByParams(Collections.singletonMap("email", email));
+
+            Map<String, String> params = new HashMap<>();
+            params.put("email", email);
+            params.put("isDelete", "0");
+
+            List<User> users = userDao.findAllByParams(params);
             if (!users.isEmpty() && !users.get(0).isDeleted()) {
                 return false;
             }
@@ -56,24 +61,51 @@ public class UserService {
     }
 
     public User getByPK(Integer id) throws ServiceException {
-        User user = new User();
+        User user;
         try (DaoFactory daoFactory = new JdbcDaoFactory()) {
             GenericDao<User> dao = daoFactory.getDao(User.class);
             user = dao.findByPK(id);
         } catch (DaoException e) {
-            throw new ServiceException();
+            throw new ServiceException("Could not get User by PK", e);
         }
         return user;
     }
 
-    public List<User> getAll() {
+    public List<User> getAll() throws ServiceException {
         try {
             DaoFactory daoFactory = DaoFactory.getDaoFactory(DaoFactory.JDBC);
             GenericDao<User> dao = daoFactory.getDao(User.class);
-            return dao.findAll();
+            List<User> users = dao.findAll();
+
+            Iterator i = users.iterator();
+            while (i.hasNext()) {
+                User user = (User) i.next();
+                if (user.isDeleted()) i.remove();
+            }
+            return users;
         } catch (DaoException e) {
-            e.printStackTrace();
+            throw new ServiceException("Could not get all User", e);
         }
-        return null;
+    }
+
+    public void save(User user) throws ServiceException {
+        try (DaoFactory daoFactory = new JdbcDaoFactory()) {
+            GenericDao<User> dao = daoFactory.getDao(User.class);
+            if (user.getId() != null) dao.update(user);
+            else dao.insert(user);
+        } catch (DaoException e) {
+            throw new ServiceException("Could not save User", e);
+        }
+    }
+
+    public void deleteUser(int id) throws ServiceException {
+
+        try (DaoFactory daoFactory = new JdbcDaoFactory()) {
+            GenericDao<User> dao = daoFactory.getDao(User.class);
+            dao.delete(id);
+        } catch (DaoException e) {
+            throw new ServiceException("Could not delete User", e);
+        }
+
     }
 }

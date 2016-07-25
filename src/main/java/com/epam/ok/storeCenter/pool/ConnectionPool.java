@@ -2,6 +2,7 @@ package com.epam.ok.storeCenter.pool;
 
 import com.epam.ok.storeCenter.util.PropertyManager;
 import com.epam.ok.storeCenter.util.PropertyManagerException;
+import org.apache.log4j.Logger;
 
 import javax.sql.DataSource;
 import java.io.PrintWriter;
@@ -12,10 +13,10 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
+
 
 public class ConnectionPool implements DataSource {
-
+    private static final Logger logger = Logger.getLogger(ConnectionPool.class);
     private String driver;
     private String url;
     private String username;
@@ -45,12 +46,14 @@ public class ConnectionPool implements DataSource {
     }
 
     public static DataSource getInstance() {
+        logger.info("Get Instance of ConnectionPool");
         return InstanceHolder.instance;
     }
 
     public void close() throws ConnectionPoolException {
         closeAllConnectionsInQueue(freeConnections);
         closeAllConnectionsInQueue(usedConnections);
+        logger.info("Close ConnectionPool");
     }
 
     private void closeAllConnectionsInQueue(BlockingQueue<PooledConnection> queue) throws ConnectionPoolException {
@@ -85,11 +88,8 @@ public class ConnectionPool implements DataSource {
         } catch (SQLException e) {
             throw new ConnectionPoolException("Could not get PooledConnection" + e.getMessage(), e);
         }
+        logger.info("Create new PooledConnection");
         return pooledConnection;
-    }
-
-    int getConnectionsLimit() {
-        return connectionsLimit;
     }
 
     @Override
@@ -107,6 +107,7 @@ public class ConnectionPool implements DataSource {
         } catch (InterruptedException e) {
             throw new SQLException("Could not get connection", e);
         }
+        logger.info("Connection was taken, freeConnections: " + freeConnections.size());
         return connection;
     }
 
@@ -145,7 +146,7 @@ public class ConnectionPool implements DataSource {
         throw new UnsupportedOperationException("Unsupported operation");
     }
 
-    public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+    public java.util.logging.Logger getParentLogger() throws SQLFeatureNotSupportedException {
         throw new UnsupportedOperationException("Unsupported operation");
     }
 
@@ -211,6 +212,7 @@ public class ConnectionPool implements DataSource {
             } catch (SQLException | InterruptedException e) {
                 throw new SQLException("Could not release current connection", e);
             }
+            logger.info("Connection was back to CP, freeConnections: " + freeConnections.size());
         }
 
         @Override

@@ -9,8 +9,8 @@ import java.sql.SQLException;
 
 public class JdbcUserDao extends AbstractDao<User> {
     private static final String TABLE_NAME = "Users";
-    private static final String INSERT_USER = "INSERT INTO Users (email, password, firstname, lastname) VALUES (?,?,?,?)";
-    private static final String UPDATE_USER = "UPDATE Users SET email  = ?, password = ?, role = ?, firstname = ?, lastname = ? WHERE id = ?";
+    private static final String INSERT_USER = "INSERT INTO Users (email, password, role, firstname, lastname, isDelete) VALUES (?,?,?,?,?,?)";
+    private static final String UPDATE_USER = "UPDATE Users SET email  = ?, password = ?, role = ?, firstname = ?, lastname = ?, isDelete = ? WHERE id = ?";
 
     @Override
     protected String getTableName() {
@@ -34,7 +34,7 @@ public class JdbcUserDao extends AbstractDao<User> {
             user.setRole(User.Role.valueOf(rs.getString("role")));
             user.setDeleted(rs.getBoolean("isDelete"));
         } catch (SQLException e) {
-            throw new DaoException();
+            throw new DaoException("Could not get object from result set", e);
         }
         return user;
     }
@@ -44,10 +44,12 @@ public class JdbcUserDao extends AbstractDao<User> {
         try {
             ps.setString(1, user.getEmail());
             ps.setString(2, user.getPassword());
-            ps.setString(3, user.getFirstname());
-            ps.setString(4, user.getLastname());
+            ps.setString(3, user.getRole().name());
+            ps.setString(4, user.getFirstname());
+            ps.setString(5, user.getLastname());
+            ps.setBoolean(6, user.isDeleted());
         } catch (SQLException e) {
-            throw new DaoException();
+            throw new DaoException("Could not set variables for prepared statement", e);
         }
     }
 

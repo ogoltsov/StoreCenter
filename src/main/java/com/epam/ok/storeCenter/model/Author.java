@@ -5,7 +5,6 @@ public class Author extends BaseEntity {
     private String firstname;
     private String patronymic;
     private String lastname;
-    private Department department;
 
     public Author(Integer id) {
         super(id);
@@ -38,11 +37,35 @@ public class Author extends BaseEntity {
         this.lastname = lastname;
     }
 
-    public Department getDepartment() {
-        return department;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        Author author = (Author) o;
+
+        if (!firstname.equals(author.firstname)) return false;
+        if (!patronymic.equals(author.patronymic)) return false;
+        return lastname.equals(author.lastname);
+
     }
 
-    public void setDepartment(Department department) {
-        this.department = department;
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + firstname.hashCode();
+        result = 31 * result + patronymic.hashCode();
+        result = 31 * result + lastname.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Author{" +
+                "firstname='" + firstname + '\'' +
+                ", patronymic='" + patronymic + '\'' +
+                ", lastname='" + lastname + '\'' +
+                '}';
     }
 }

@@ -10,7 +10,9 @@
 
     <link href="${pageContext.request.contextPath}/css/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/menu.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap-datetimepicker.min.css">
 </head>
+<script src="${pageContext.request.contextPath}/js/bootstrap-datetimepicker.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/bootstrap.js"></script>
 <body>
@@ -34,12 +36,72 @@
     <div><a href="${pageContext.request.contextPath}/app/speciality">Speciality</a></div>
     <c:if test="${loggedUser.role.toString()=='admin'}">
         <div><a href="${pageContext.request.contextPath}/app/user">Users</a></div>
-        <div><a href="#">Admin Panel</a></div>
     </c:if>
 </div>
 <div class="workspace">
     <jsp:doBody/>
 </div>
+
+<div class="modal fade" id="author-modal">
+    <div class="modal-dailog modal-md-5">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal">
+                    &times;
+                </button>
+                <h4 class="modal-title">Select authors:</h4>
+
+            </div>
+            <div class="modal-body">
+                <form action="${pageContext.request.contextPath}/app/setAuthorForResource" method="post">
+                    <input type="text" hidden value="${resource.id}" name="resourceId">
+                    <select id="author" name="authorId" class="form-control">
+                        <c:forEach var="author" items="${authorList}">
+                            <jsp:useBean id="author" scope="request" class="com.epam.ok.storeCenter.model.Author"/>
+                            <option value="${author.id}">${author.lastname} ${author.firstname} ${author.patronymic}</option>
+                        </c:forEach>
+                    </select>
+
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success">Save</button>
+                </form>
+                <button class="btn btn-danger" type="button" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="speciality-modal">
+    <div class="modal-dailog modal-md-5">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal">
+                    &times;
+                </button>
+                <h4 class="modal-title">Select authors:</h4>
+
+            </div>
+            <div class="modal-body">
+                <form action="${pageContext.request.contextPath}/app/setSpecialityForResource" method="post">
+                    <input type="text" hidden value="${resource.id}" name="resourceId">
+                    <select id="speciality" name="specId" class="form-control">
+                        <c:forEach var="speciality" items="${specialityList}">
+                            <option value="${speciality.id}">${speciality.code} - ${speciality.title}</option>
+                        </c:forEach>
+                    </select>
+
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success">Save</button>
+                </form>
+                <button class="btn btn-danger" type="button" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 </body>
 </html>

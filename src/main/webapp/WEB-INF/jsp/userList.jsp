@@ -38,7 +38,7 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td><a href="#">Add</a></td>
+                    <td><a href="${pageContext.request.contextPath}/app/createUser">Add</a></td>
                 </tr>
             </c:if>
             </tbody>

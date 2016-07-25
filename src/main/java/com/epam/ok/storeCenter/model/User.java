@@ -63,6 +63,36 @@ public class User extends BaseEntity {
         this.role = role;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        User user = (User) o;
+
+        if (!email.equals(user.email)) return false;
+        if (!password.equals(user.password)) return false;
+        if (!firstname.equals(user.firstname)) return false;
+        return lastname.equals(user.lastname);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + email.hashCode();
+        result = 31 * result + password.hashCode();
+        result = 31 * result + firstname.hashCode();
+        result = 31 * result + lastname.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "User{id:" + super.getId() + ", email: " + email + ", role: " + role + "}";
+    }
+
     public enum Role {
         user, moderator, guest, admin;
 

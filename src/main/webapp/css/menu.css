@@ -9,18 +9,21 @@ html {
 a {
     display: block;
     width: auto;
-    height: 25px;
+    height: 30px;
     margin: 5px 5px 5px 5px;
     padding-top: 5px;
     padding-left: 15px;
     color: #C9CED4;
+    text-decoration: none;
 }
 
 a:hover {
-    background: rgba(255,255,255,0.1)
+    background: rgba(255,255,255,0.1);
+    color:#C9CED4;
 }
 .menu {
-    background:#2A3F54;
+    /*background:#2A3F54;*/
+    background:#333;
     width: 200px;
     position: absolute;
     height: 100%;
@@ -40,7 +43,8 @@ a:hover {
     height: 50px;
     width: auto;
     position: absolute;
-    background: #2A3F54;
+    /*background: #2A3F54;*/
+    background: #333;
     top:0;
     bottom:0;
     left:0;

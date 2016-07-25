@@ -44,9 +44,8 @@ public class JdbcDaoFactory extends DaoFactory {
         try {
             this.connection.setAutoCommit(true);
             this.connection.close();
-
         } catch (SQLException e) {
-            throw new DaoException();
+            throw new DaoException("Could not close PooledConnection", e);
         }
 
     }

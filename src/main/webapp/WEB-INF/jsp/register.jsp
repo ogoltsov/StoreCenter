@@ -1,32 +1,36 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
-    <title>Register</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Login Form</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
 <body>
-<form method="post" action="${pageContext.request.contextPath}/app/register">
-    <c:if test="${error!=null}">
-        <p style="color: darkred">${error}</p>
-    </c:if>
-    <label for="email">Email</label>
-    <input type="text" id="email" name="email" placeholder="Email" value="${userData.email}">
-    <c:if test="${emailError!=null}">
-        <p style="color: darkred">${emailError}</p>
-    </c:if>
-    <br>
-    <label for="password">Password</label>
-    <input type="password" id="password" name="password" placeholder="Password" value="${userData.password}">
-    <br>
-    <label for="firstname">Firstname</label>
-    <input type="text" id="firstname" name="firstname" placeholder="Firstname" value="${userData.firstname}">
-    <br>
-    <label for="lastname">Lastname</label>
-    <input type="text" id="lastname" name="lastname" placeholder="Lastname" value="${userData.lastname}">
-    <br>
-    <button type="submit">Register</button>
-    <button type="reset">Reset</button>
-</form>
+<section class="container">
+    <div class="login">
+        <h1>Register to Web App</h1>
+        <c:if test="${error!=null}">
+            <p style="color: darkred">${error}</p>
+        </c:if>
+        <c:if test="${emailError!=null}">
+            <p style="color: darkred">${emailError}</p>
+        </c:if>
+        <form method="post" action="${pageContext.request.contextPath}/app/register">
+            <p><input type="text" name="email" required placeholder="Email" value="${userData.email}"></p>
+            <p><input type="password" name="password" required placeholder="Password" value="${userData.password}"></p>
+            <p><input type="text" name="lastname" required placeholder="Lastname" value="${userData.lastname}"></p>
+            <p><input type="text" name="firstname" required placeholder="Firstname" value="${userData.firstname}"></p>
+
+            <p class="submit"><input type="submit" name="commit" value="Register"></p>
+        </form>
+    </div>
+</section>
 </body>
 </html>
+
+
+
+
+

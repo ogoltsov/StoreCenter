@@ -11,7 +11,6 @@
                 <th>Lastname</th>
                 <th>Firstname</th>
                 <th>Patronymic</th>
-                <th>College(Department)</th>
                 <c:if test="${loggedUser.role.toString()!='user'}">
                     <th>Action</th>
                 </c:if>
@@ -24,9 +23,8 @@
                     <td>${author.lastname}</td>
                     <td>${author.firstname}</td>
                     <td>${author.patronymic}</td>
-                    <td></td>
                     <c:if test="${loggedUser.role.toString()!='user'}">
-                        <td><a href="#">Edit</a></td>
+                        <td><a href="${pageContext.request.contextPath}/app/author?id=${author.id}">Edit</a></td>
                     </c:if>
                 </tr>
             </c:forEach>
@@ -36,8 +34,7 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td></td>
-                    <td><a href="#">Add</a></td>
+                    <td><a href="${pageContext.request.contextPath}/app/createAuthor">Add</a></td>
                 </tr>
             </c:if>
             </tbody>

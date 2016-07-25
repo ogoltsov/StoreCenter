@@ -17,13 +17,13 @@
             </thead>
             <tbody>
             <c:forEach items="${statusList}" var="status">
-                <jsp:useBean id="status" scope="request" class="com.epam.ok.storeCenter.model.Status" />
+                <jsp:useBean id="status" scope="request" class="com.epam.ok.storeCenter.model.Status"/>
                 <tr>
                     <td></td>
                     <td>${status.title}</td>
                     <td>${status.description}</td>
                     <c:if test="${loggedUser.role.toString()!='user'}">
-                        <td><a href="#">Edit</a></td>
+                        <td><a href="${pageContext.request.contextPath}/app/status?id=${status.id}">Edit</a></td>
                     </c:if>
                 </tr>
             </c:forEach>
@@ -32,7 +32,7 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td><a href="#">Add</a></td>
+                    <td><a href="${pageContext.request.contextPath}/app/createStatus">Add</a></td>
                 </tr>
             </c:if>
             </tbody>

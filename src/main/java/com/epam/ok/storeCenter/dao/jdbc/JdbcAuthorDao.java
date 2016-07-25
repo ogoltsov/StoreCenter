@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 public class JdbcAuthorDao extends AbstractDao<Author> {
     private static final String TABLE_NAME = "Author";
-    private static final String INSERT_AUTHOR = "INSERT INTO Author (lastname, firstname, patronymic) VALUES (?,?,?)";
+    private static final String INSERT_AUTHOR = "INSERT INTO Author (lastname, firstname, patronymic, isDelete) VALUES (?,?,?,?)";
     private static final String UPDATE_AUTHOR = "UPDATE Author SET firstname = ?, lastname = ?, patronymic = ?, isDelete = ? WHERE id = ?";
 
     @Override
@@ -37,7 +37,7 @@ public class JdbcAuthorDao extends AbstractDao<Author> {
             author.setPatronymic(rs.getString("patronymic"));
             author.setDeleted(rs.getBoolean("isDelete"));
         } catch (SQLException e) {
-            throw new DaoException();
+            throw new DaoException("Could not get object from result set", e);
         }
         return author;
     }
@@ -50,7 +50,7 @@ public class JdbcAuthorDao extends AbstractDao<Author> {
             ps.setString(3, author.getPatronymic());
             ps.setBoolean(4, author.isDeleted());
         } catch (SQLException e) {
-            throw new DaoException();
+            throw new DaoException("Could not set variables for prepared statement", e);
         }
     }
 }

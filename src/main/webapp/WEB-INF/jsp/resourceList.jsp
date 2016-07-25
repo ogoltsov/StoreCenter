@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <t:generic-page>
     <div class="container">
@@ -21,10 +22,11 @@
             </thead>
             <tbody>
             <c:forEach items="${resources}" var="resource">
+                <%--<jsp:useBean id="resource" scope="request" class="com.epam.ok.storeCenter.model.Resource"/>--%>
                 <tr>
                     <td></td>
                     <td>${resource.title}</td>
-                    <td>${resource.date}</td>
+                    <td>${resource.formatedeDate}</td>
                     <td>${resource.category.title}</td>
                     <td>${resource.status.title}</td>
                     <td>
@@ -34,11 +36,11 @@
                     </td>
                     <td>
                         <c:forEach items="${resource.authors}" var="author">
-                            <p>${author.firstname} ${author.patronymic} ${author.lastname}</p>
+                            <p>${author.lastname} ${author.firstname} ${author.patronymic}</p>
                         </c:forEach>
                     </td>
                     <c:if test="${loggedUser.role.toString()!='user'}">
-                        <td><a href="#">Edit</a></td>
+                        <td><a href="${pageContext.request.contextPath}/app/resource?id=${resource.id}">Edit</a></td>
                     </c:if>
                 </tr>
             </c:forEach>
@@ -51,7 +53,7 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td><a href="#">Add</a></td>
+                    <td><a href="${pageContext.request.contextPath}/app/createResource">Add</a></td>
                 </tr>
             </c:if>
             </tbody>

@@ -2,7 +2,6 @@ package com.epam.ok.storeCenter.model;
 
 public class Speciality extends BaseEntity {
 
-    private String title;
     private String code;
 
     public Speciality(Integer id) {
@@ -10,8 +9,7 @@ public class Speciality extends BaseEntity {
     }
 
     public Speciality(Integer id, String title, String code) {
-        super(id);
-        this.title = title;
+        super(id, title);
         this.code = code;
     }
 
@@ -28,10 +26,38 @@ public class Speciality extends BaseEntity {
     }
 
     public String getTitle() {
-        return title;
+        return super.getTitle();
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        super.setTitle(title);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        Speciality that = (Speciality) o;
+
+        if (!this.getTitle().equals(that.getTitle())) return false;
+        return code.equals(that.code);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + getTitle().hashCode();
+        result = 31 * result + code.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + "Speciality{" +
+                "code='" + code + '\'' +
+                '}';
     }
 }

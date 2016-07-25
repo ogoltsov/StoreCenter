@@ -3,6 +3,7 @@ package com.epam.ok.storeCenter.dao.jdbc;
 import com.epam.ok.storeCenter.dao.DaoException;
 import com.epam.ok.storeCenter.dao.GenericDao;
 import com.epam.ok.storeCenter.model.BaseEntity;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class AbstractDao<T extends BaseEntity> implements GenericDao<T> {
-
+    private static final Logger logger = Logger.getLogger(AbstractDao.class);
     private static final String SELECT_FROM = "SELECT * FROM ";
     private static final String WHERE_ID = " WHERE id = ";
 
@@ -32,12 +33,14 @@ public abstract class AbstractDao<T extends BaseEntity> implements GenericDao<T>
             setVariablesForPreparedStatementExceptId(t, ps);
             ps.executeUpdate();
             ResultSet rs = ps.getGeneratedKeys();
-            rs.next();
-            t.setId(rs.getInt(1));
-            t.setDeleted(false);
+            if (rs.next()) {
+                t.setId(rs.getInt(1));
+                t.setDeleted(false);
+            }
         } catch (SQLException e) {
             throw new DaoException("Could not insert Object to db", e);
         }
+        logger.info("Insert new object: " + t);
         return t;
     }
 
@@ -50,8 +53,9 @@ public abstract class AbstractDao<T extends BaseEntity> implements GenericDao<T>
             object = getObjectFromResultSet(rs);
 
         } catch (SQLException e) {
-            throw new DaoException();
+            throw new DaoException("Could not find object by current id", e);
         }
+        logger.info("Find object by PK: " + object);
         return object;
     }
 
@@ -66,6 +70,7 @@ public abstract class AbstractDao<T extends BaseEntity> implements GenericDao<T>
         } catch (SQLException e) {
             throw new DaoException("Could not find object with this params", e);
         }
+        logger.info("Find objects by params: " + params);
         return objects;
     }
 
@@ -91,29 +96,44 @@ public abstract class AbstractDao<T extends BaseEntity> implements GenericDao<T>
                 objects.add(getObjectFromResultSet(rs));
             }
         } catch (SQLException e) {
-            throw new DaoException();
+            throw new DaoException("Could not find all object", e);
         }
+        logger.info("Find all users");
         return objects;
     }
 
     @Override
-    public List<T> findAll(int pageNumber, int pageSize) throws DaoException {
-        return null;
+    public void update(T t) throws DaoException {
+        try (PreparedStatement ps = connection.prepareStatement(getQueryForUpdate())) {
+            setVariablesForPreparedStatement(t, ps);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException("Could not update Object in db", e);
+        }
+        logger.info("Update object from db: " + t);
     }
 
-    @Override
-    public void update(T t) throws DaoException {
-
+    private void setVariablesForPreparedStatement(T t, PreparedStatement ps) throws DaoException {
+        setVariablesForPreparedStatementExceptId(t, ps);
+        if (t.getId() != null) {
+            int lastParameterIndex;
+            try {
+                lastParameterIndex = ps.getParameterMetaData().getParameterCount();
+                ps.setInt(lastParameterIndex, t.getId());
+            } catch (SQLException e) {
+                throw new DaoException("Could not set variables for prepared statement", e);
+            }
+        }
     }
 
     @Override
     public void delete(Integer id) throws DaoException {
-
-    }
-
-    @Override
-    public int getNotDeletedCount() throws DaoException {
-        return 0;
+        try (Statement st = connection.createStatement()) {
+            st.executeUpdate("UPDATE " + getTableName() + " SET isDelete=1" + WHERE_ID + id);
+        } catch (SQLException e) {
+            throw new DaoException("Could not delete object by id", e);
+        }
+        logger.info("Delete object by id: " + id + "  from table: " + getTableName());
     }
 
     public void setConnection(Connection connection) {

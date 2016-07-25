@@ -4,13 +4,25 @@
 
 <t:generic-page>
     <div class="container">
-        <form class="form-horizontal">
+        <c:if test="${error!=null}">
+            <p>${error}</p>
+        </c:if>
+        <form class="form-horizontal" action="${pageContext.request.contextPath}/app/saveUser" method="post">
             <fieldset>
 
                 <!-- Form Name -->
                 <legend>Edit User</legend>
                 <jsp:useBean id="user" class="com.epam.ok.storeCenter.model.User" scope="request"/>
                 <!-- Text input-->
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="id">ID</label>
+                    <div class="col-md-5">
+                        <input id="id" name="id" type="text" class="form-control input-md"
+                               value="${user.id}" readonly="readonly">
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="email">Email</label>
                     <div class="col-md-5">
@@ -47,12 +59,17 @@
                     </div>
                 </div>
 
-                <!-- Select Basic -->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="isDelete">Deleted</label>
+                    <div class="col-md-5">
+                        <p class="form-control-static" id="isDelete">${user.deleted}</p>
+                    </div>
+                </div>
 
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="selectbasic">Role</label>
+                    <label class="col-md-4 control-label" for="role">Role</label>
                     <div class="col-md-5">
-                        <select id="selectbasic" name="selectbasic" class="form-control">
+                        <select id="role" name="role" class="form-control">
                             <c:choose>
                                 <c:when test="${user.role!='admin'}">
                                     <c:forEach items="${roles}" var="role">
@@ -74,35 +91,14 @@
                     </div>
                 </div>
 
-
-                <!-- Multiple Checkboxes -->
-                <c:if test="${user.role.toString()!='admin'}">
-                    <div class="form-group">
-                        <label class="col-md-4 control-label" for="checkboxes">Active</label>
-                        <div class="col-md-4">
-                            <div class="checkbox" id="checkboxes">
-                                <label for="checkboxes-0">
-                                    <c:choose>
-                                        <c:when test="${!user.deleted}">
-                                            <input type="checkbox" name="checkboxes" id="checkboxes-0" checked>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <input type="checkbox" name="checkboxes" id="checkboxes-0">
-                                        </c:otherwise>
-                                    </c:choose>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-                </c:if>
-
-                <!-- Button (Double) -->
                 <div class="form-group">
-                    <label class="col-md-4 control-label" for="buttonSave">Actions</label>
+                    <label class="col-md-4 control-label">Actions</label>
                     <div class="col-md-8">
-                        <button id="buttonSave" name="buttonSave" type="submit" class="btn btn-success">Save</button>
-                        <button id="buttonCancel" name="buttonCancel" type="reset" class="btn btn-danger">Reset</button>
+                        <button type="submit" class="btn btn-success">Save</button>
+                        <button type="reset" class="btn btn-warning">Reset</button>
+                        <button type="submit" class="btn btn-danger"
+                                formaction="${pageContext.request.contextPath}/app/deleteUser">Delete
+                        </button>
                     </div>
                 </div>
             </fieldset>

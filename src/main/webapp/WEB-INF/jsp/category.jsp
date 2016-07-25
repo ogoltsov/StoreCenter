@@ -5,7 +5,10 @@
 <t:generic-page>
     <jsp:useBean id="category" scope="request" class="com.epam.ok.storeCenter.model.Category"/>
     <div class="container">
-        <form class="form-horizontal">
+        <c:if test="${error!=null}">
+            <p>${error}</p>
+        </c:if>
+        <form class="form-horizontal" method="post" action="${pageContext.request.contextPath}/app/saveCategory">
             <fieldset>
 
                 <!-- Form Name -->
@@ -15,8 +18,8 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="textinput">ID</label>
                     <div class="col-md-5">
-                        <input id="textinput" name="textinput" type="text" placeholder="ID"
-                               class="form-control input-md" required="" value="${category.id}">
+                        <input id="textinput" name="id" type="text" placeholder="ID"
+                               class="form-control input-md" readonly value="${category.id}">
 
                     </div>
                 </div>
@@ -50,10 +53,10 @@
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="description">Description</label>
                     <div class="col-md-5">
-                        <textarea class="form-control" id="description" name="description">${category.description}</textarea>
+                        <textarea class="form-control" id="description"
+                                  name="description">${category.description}</textarea>
                     </div>
                 </div>
-
 
 
                 <!-- Button (Double) -->
@@ -61,7 +64,10 @@
                     <label class="col-md-4 control-label" for="save">Save</label>
                     <div class="col-md-8">
                         <button id="save" name="save" class="btn btn-success" type="submit">Save</button>
-                        <button id="cancel" name="cancel" class="btn btn-danger" type="reset">Cancel</button>
+                        <button id="cancel" name="cancel" class="btn btn-warning" type="reset">Cancel</button>
+                        <button id="delete" name="save" class="btn btn-danger" type="submit"
+                                formaction="${pageContext.request.contextPath}/app/deleteCategory">Delete
+                        </button>
                     </div>
                 </div>
 

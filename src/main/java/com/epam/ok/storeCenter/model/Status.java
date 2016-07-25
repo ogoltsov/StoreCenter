@@ -36,4 +36,11 @@ public class Status extends BaseEntity {
     public void setTitle(String title) {
         super.setTitle(title);
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + "Status{" +
+                "description='" + description + '\'' +
+                '}';
+    }
 }

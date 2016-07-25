@@ -13,12 +13,7 @@ public interface GenericDao<T> {
 
     List<T> findAll() throws DaoException;
 
-    List<T> findAll(int pageNumber, int pageSize) throws DaoException;
-
     void update(T t) throws DaoException;
 
     void delete(Integer id) throws DaoException;
-
-    int getNotDeletedCount() throws DaoException;
-
 }

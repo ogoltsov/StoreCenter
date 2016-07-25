@@ -1,16 +1,16 @@
 package com.epam.ok.storeCenter.action;
 
-public class ActionResult {
+public class View {
 
     private String view;
     private boolean isRedirect;
 
-    ActionResult(String pageName) {
+    View(String pageName) {
         this.view = pageName;
         this.isRedirect = false;
     }
 
-    ActionResult(String pageName, boolean isRedirect) {
+    View(String pageName, boolean isRedirect) {
         this.view = pageName;
         this.isRedirect = isRedirect;
     }

@@ -10,7 +10,7 @@ import java.sql.SQLException;
 public class JdbcCategoryDao extends AbstractDao<Category> {
 
     private static final String TABLE_NAME = "Category";
-    private static final String INSERT_CATEGORY = "INSERT INTO Category (title) VALUES (?)";
+    private static final String INSERT_CATEGORY = "INSERT INTO Category (title, description, isDelete) VALUES (?, ?, ?)";
     private static final String UPDATE_CATEGORY = "UPDATE Category SET title = ?, description = ?, isDelete = ? WHERE id = ?";
 
     @Override
@@ -38,13 +38,20 @@ public class JdbcCategoryDao extends AbstractDao<Category> {
             category.setDeleted(rs.getBoolean("isDelete"));
             category.setDescription(rs.getString("description"));
         } catch (SQLException e) {
-            throw new DaoException();
+            throw new DaoException("Could not get object from result set", e);
         }
         return category;
     }
 
     @Override
+    @SuppressWarnings("Duplicates")
     protected void setVariablesForPreparedStatementExceptId(Category category, PreparedStatement ps) throws DaoException {
-
+        try {
+            ps.setString(1, category.getTitle());
+            ps.setString(2, category.getDescription());
+            ps.setBoolean(3, category.isDeleted());
+        } catch (SQLException e) {
+            throw new DaoException("Could not set variables for prepared statement", e);
+        }
     }
 }

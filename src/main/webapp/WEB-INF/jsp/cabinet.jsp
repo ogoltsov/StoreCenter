@@ -4,12 +4,13 @@
 
 <t:generic-page>
     <div class="page">
-        <p>User:</p>
-        <p>Login: ${loggedUser.email}</p>
-        <p>Password: ${loggedUser.password}</p>
-        <p>Firstname: ${loggedUser.firstname}</p>
-        <p>Lastname: ${loggedUser.lastname}</p>
-        <p>Role: ${loggedUser.role.toString()}</p>
-        <p>Active?: ${!loggedUser.deleted}</p>
+
+        <h2 align="center">Welcome to StoreCenter of Education resource </h2>
+
+        <h4>It is your private cabinet</h4>
+
+        <p>You logged as: ${loggedUser.lastname} ${loggedUser.firstname}</p>
+        <p>Your email: ${loggedUser.email}</p>
+        <p>Your role: ${loggedUser.role.toString()}</p>
     </div>
 </t:generic-page>

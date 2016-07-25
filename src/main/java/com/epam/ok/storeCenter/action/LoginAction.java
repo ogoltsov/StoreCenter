@@ -1,36 +1,52 @@
 package com.epam.ok.storeCenter.action;
 
+import com.epam.ok.storeCenter.Validator;
 import com.epam.ok.storeCenter.model.User;
 import com.epam.ok.storeCenter.service.ServiceException;
 import com.epam.ok.storeCenter.service.UserService;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 class LoginAction implements Action {
+    private static final Logger logger = Logger.getLogger(LoginAction.class);
 
     @Override
-    public ActionResult execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
+    public View execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-
         UserService service = new UserService();
         User user;
-        ActionResult result;
+        View result;
+        boolean isValide = isValide(email, password);
         try {
-            user = service.performUserLogin(email, password);
-
-            if (user != null) {
-                request.getSession(false).setAttribute("loggedUser", user);
-                result = new ActionResult("cabinet");
-                result.setRedirect(true);
-            } else {
-                request.setAttribute("loginError", "Invalid Login or Password");
-                result = new ActionResult("login");
+            if (isValide){
+                user = service.performUserLogin(email, password);
+                if (user != null) {
+                    request.getSession(false).setAttribute("loggedUser", user);
+                    result = new View("cabinet");
+                    result.setRedirect(true);
+                    logger.info("User is logged on: " + user.toString());
+                } else {
+                    result = returnToLoginViewWithError(request);
+                }
+            }else {
+                result = returnToLoginViewWithError(request);
             }
         } catch (ServiceException e) {
-            throw new ActionException();
+            throw new ActionException("Could not execute LoginAction", e);
         }
         return result;
+    }
+
+    private boolean isValide(String email, String password) {
+        Validator validator = new Validator();
+        return (validator.validate(email, Validator.EMAIL) && (validator.validate(password, Validator.PASSWORD)));
+    }
+
+    private View returnToLoginViewWithError(HttpServletRequest request){
+        request.setAttribute("loginError", "Invalid Login or Password");
+        return new View("login");
     }
 }

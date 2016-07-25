@@ -23,4 +23,12 @@ public class ResourceSpeciality extends BaseEntity {
     public void setResourceId(Integer resourceId) {
         this.resourceId = resourceId;
     }
+
+    @Override
+    public String toString() {
+        return "ResourceSpeciality{" +
+                "resourceId=" + resourceId +
+                ", specialityId=" + specialityId +
+                '}';
+    }
 }

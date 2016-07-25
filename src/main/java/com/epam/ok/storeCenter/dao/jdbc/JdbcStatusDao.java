@@ -10,8 +10,8 @@ import java.sql.SQLException;
 public class JdbcStatusDao extends AbstractDao<Status> {
 
     private static final String TABLE_NAME = "Status";
-    private static final String INSETR_STATUS = "INSERT INTO Status (title) VALUES (?)";
-    private static final String UPDATE_STATUS = "UPDATE Status SET title = ?, isDelete = ? WHERE id = ?";
+    private static final String INSERT_STATUS = "INSERT INTO Status (title, description, isDelete) VALUES (?,?,?)";
+    private static final String UPDATE_STATUS = "UPDATE Status SET title = ?, description = ?, isDelete = ? WHERE id = ?";
 
     @Override
     protected String getTableName() {
@@ -20,7 +20,7 @@ public class JdbcStatusDao extends AbstractDao<Status> {
 
     @Override
     protected String getQueryForInsert() {
-        return INSETR_STATUS;
+        return INSERT_STATUS;
     }
 
     @Override
@@ -38,18 +38,20 @@ public class JdbcStatusDao extends AbstractDao<Status> {
             status.setDeleted(rs.getBoolean("isDelete"));
             status.setDescription(rs.getString("description"));
         } catch (SQLException e) {
-            throw new DaoException();
+            throw new DaoException("Could not get object from result set", e);
         }
         return status;
     }
 
     @Override
+    @SuppressWarnings("Duplicates")
     protected void setVariablesForPreparedStatementExceptId(Status status, PreparedStatement ps) throws DaoException {
         try {
             ps.setString(1, status.getTitle());
-            ps.setBoolean(2, status.isDeleted());
+            ps.setString(2, status.getDescription());
+            ps.setBoolean(3, status.isDeleted());
         } catch (SQLException e) {
-            throw new DaoException();
+            throw new DaoException("Could not set variables for prepared statement", e);
         }
 
     }

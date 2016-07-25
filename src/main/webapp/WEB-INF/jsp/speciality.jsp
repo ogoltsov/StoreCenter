@@ -5,23 +5,22 @@
 <t:generic-page>
     <jsp:useBean id="speciality" scope="request" class="com.epam.ok.storeCenter.model.Speciality"/>
     <div class="container">
-        <form class="form-horizontal">
+        <c:if test="${deleteError!=null}">
+            <p>${deleteError}</p>
+        </c:if>
+        <form class="form-horizontal" method="post" action="${pageContext.request.contextPath}/app/saveSpeciality">
             <fieldset>
-
-                <!-- Form Name -->
                 <legend>Edit Speciality</legend>
 
-                <!-- Text input-->
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="textinput">ID</label>
                     <div class="col-md-5">
-                        <input id="textinput" name="textinput" type="text" placeholder="ID"
-                               class="form-control input-md" required="" value="${speciality.id}">
+                        <input id="textinput" name="id" type="text" placeholder="ID"
+                               class="form-control input-md" value="${speciality.id}" readonly>
 
                     </div>
                 </div>
 
-                <!-- Text input-->
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="title">Title</label>
                     <div class="col-md-5">
@@ -31,7 +30,6 @@
                     </div>
                 </div>
 
-                <!-- Text input-->
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="code">Code</label>
                     <div class="col-md-5">
@@ -41,27 +39,28 @@
                     </div>
                 </div>
 
-                <!-- Select Basic -->
                 <div class="form-group">
                     <label class="col-md-4 control-label">Delete</label>
                     <div class="col-md-5">
-                            <c:choose>
-                                <c:when test="${speciality.deleted}">
-                                    <p class="form-control-static">True</p>
-                                </c:when>
-                                <c:otherwise>
-                                    <p class="form-control-static">False</p>
-                                </c:otherwise>
-                            </c:choose>
+                        <c:choose>
+                            <c:when test="${speciality.deleted}">
+                                <p class="form-control-static">True</p>
+                            </c:when>
+                            <c:otherwise>
+                                <p class="form-control-static">False</p>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
                 </div>
 
-                <!-- Button (Double) -->
                 <div class="form-group">
                     <label class="col-md-4 control-label" for="save">Save</label>
                     <div class="col-md-8">
-                        <button id="save" name="save" class="btn btn-success">Save</button>
-                        <button id="cancel" name="cancel" class="btn btn-danger">Cancel</button>
+                        <button id="save" name="save" class="btn btn-success" type="submit">Save</button>
+                        <button id="cancel" name="cancel" class="btn btn-warning" type="reset">Cancel</button>
+                        <button id="delete" name="delete" class="btn btn-danger" type="submit"
+                                formaction="${pageContext.request.contextPath}/app/deleteSpeciality">Delete
+                        </button>
                     </div>
                 </div>
 

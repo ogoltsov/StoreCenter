@@ -3,17 +3,22 @@ package com.epam.ok.storeCenter.model;
 public class ResourceAuthor extends BaseEntity {
 
     private Integer resourceId;
-    private Integer authoreId;
+    private Integer authorId;
 
     public ResourceAuthor() {
     }
 
-    public Integer getAuthoreId() {
-        return authoreId;
+    public ResourceAuthor(int resId, int authId) {
+        this.resourceId = resId;
+        this.authorId = authId;
     }
 
-    public void setAuthoreId(Integer authoreId) {
-        this.authoreId = authoreId;
+    public Integer getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(Integer authorId) {
+        this.authorId = authorId;
     }
 
     public Integer getResourceId() {
@@ -22,5 +27,13 @@ public class ResourceAuthor extends BaseEntity {
 
     public void setResourceId(Integer resourceId) {
         this.resourceId = resourceId;
+    }
+
+    @Override
+    public String toString() {
+        return "ResourceAuthor{" +
+                "resourceId=" + resourceId +
+                ", authorId=" + authorId +
+                '}';
     }
 }

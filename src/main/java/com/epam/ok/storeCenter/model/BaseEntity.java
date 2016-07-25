@@ -53,4 +53,34 @@ public class BaseEntity {
     public void setDeleted(boolean deleted) {
         isDeleted = deleted;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        BaseEntity that = (BaseEntity) o;
+
+        if (isDeleted != that.isDeleted) return false;
+        if (!id.equals(that.id)) return false;
+        return title != null ? title.equals(that.title) : that.title == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + (isDeleted ? 1 : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "BaseEntity{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", isDeleted=" + isDeleted +
+                '}';
+    }
 }

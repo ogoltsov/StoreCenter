@@ -11,6 +11,7 @@ public class JdbcResourceSpecialityDao extends AbstractDao<ResourceSpeciality> {
 
     private static final String TABLE_NAME = "ResourceSpeciality";
     private static final String INSERT_RESOURCE_SPECIALITY = "INSERT INTO ResourceSpeciality (resId, specId) VALUES (?, ?)";
+    private static final String DELETE_RESOURCE_SPECIALITY = "DELETE FROM ResourceSpeciality WHERE resId = ? AND specId = ?";
 
     @Override
     protected String getTableName() {
@@ -24,7 +25,7 @@ public class JdbcResourceSpecialityDao extends AbstractDao<ResourceSpeciality> {
 
     @Override
     protected String getQueryForUpdate() {
-        return null;
+        return DELETE_RESOURCE_SPECIALITY;
     }
 
     @Override
@@ -34,13 +35,18 @@ public class JdbcResourceSpecialityDao extends AbstractDao<ResourceSpeciality> {
             resourceSpeciality.setResourceId(rs.getInt("resId"));
             resourceSpeciality.setSpecialityId(rs.getInt("specId"));
         } catch (SQLException e) {
-            throw new DaoException();
+            throw new DaoException("Could not get object from result set", e);
         }
         return resourceSpeciality;
     }
 
     @Override
-    protected void setVariablesForPreparedStatementExceptId(ResourceSpeciality resourceSpeciality, PreparedStatement ps) throws DaoException {
-
+    protected void setVariablesForPreparedStatementExceptId(ResourceSpeciality rs, PreparedStatement ps) throws DaoException {
+        try {
+            ps.setInt(1,rs.getResourceId());
+            ps.setInt(2,rs.getSpecialityId());
+        } catch (SQLException e) {
+            throw new DaoException("Could not set variables for prepared statement", e);
+        }
     }
 }
