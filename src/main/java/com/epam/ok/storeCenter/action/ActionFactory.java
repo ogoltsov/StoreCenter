@@ -43,6 +43,7 @@ public class ActionFactory {
         actions.put("GET/removeAuthorFromResource", new RemoveAuthorFromResourceAction());
         actions.put("POST/setSpecialityForResource", new AddSpecialityForResourceAction());
         actions.put("GET/removeSpecialityFromResource", new RemoveSpecialityFromResourceAction());
+        actions.put("GET/locale", new SelectLocaleAction());
     }
 
     public static Action getAction(String actionName) {

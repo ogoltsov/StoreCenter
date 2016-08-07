@@ -20,6 +20,7 @@ a {
 a:hover {
     background: rgba(255,255,255,0.1);
     color:#C9CED4;
+    text-decoration: none;
 }
 .menu {
     /*background:#2A3F54;*/
@@ -64,10 +65,13 @@ a:hover {
     right:0;
     margin-top: 65px;
     margin-left: 220px;
-    width: 86%;
+    /*width: 86%;*/
     border: 1px solid red;
 }
 
 td > a {
     color: red;
+}
+.langSelector {
+    margin-top: 8px;
 }

@@ -31,7 +31,10 @@ public class FrontControllerServlet extends HttpServlet {
     private void forward(View view, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         logger.info("Forward user: " + view.getView());
         if (view.isRedirect()) {
-            String location = request.getContextPath() + "/app/" + view.getView();
+            String location = view.getView();
+            if (!location.startsWith("http")) {
+                location = request.getContextPath() + "/app/" + view.getView();
+            }
             response.sendRedirect(location);
         } else {
             String path = "/WEB-INF/jsp/" + view.getView() + ".jsp";

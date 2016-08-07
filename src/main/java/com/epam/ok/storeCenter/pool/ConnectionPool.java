@@ -7,6 +7,13 @@ import org.apache.log4j.Logger;
 import javax.sql.DataSource;
 import java.io.PrintWriter;
 import java.sql.*;
+import java.sql.Blob;
+import java.sql.CallableStatement;
+import java.sql.Clob;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -158,7 +165,7 @@ public class ConnectionPool implements DataSource {
         static final DataSource instance = new ConnectionPool();
     }
 
-    private class PooledConnection implements Connection {
+    private class PooledConnection extends com.mysql.jdbc.ConnectionImpl  {
 
 
         private final Connection connection;
@@ -217,11 +224,6 @@ public class ConnectionPool implements DataSource {
                 throw new SQLException("Could not release current connection", e);
             }
             logger.info("Connection was back to CP, freeConnections: " + freeConnections.size());
-        }
-
-        @Override
-        public boolean isClosed() throws SQLException {
-            return connection.isClosed();
         }
 
         @Override

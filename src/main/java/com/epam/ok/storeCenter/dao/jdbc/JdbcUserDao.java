@@ -6,6 +6,7 @@ import com.epam.ok.storeCenter.model.User;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class JdbcUserDao extends AbstractDao<User> {
     private static final String TABLE_NAME = "Users";
@@ -56,5 +57,14 @@ public class JdbcUserDao extends AbstractDao<User> {
     @Override
     protected String getQueryForUpdate() {
         return UPDATE_USER;
+    }
+
+    @Override
+    public void delete(Integer id) throws DaoException {
+        try (Statement st = connection.createStatement()) {
+            st.executeUpdate("DELETE FROM " + getTableName() + " WHERE id = " + id);
+        } catch (SQLException e) {
+            throw new DaoException("Could not delete object by id", e);
+        }
     }
 }

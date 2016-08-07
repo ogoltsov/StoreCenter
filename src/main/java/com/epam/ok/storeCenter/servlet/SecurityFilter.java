@@ -32,6 +32,7 @@ public class SecurityFilter implements Filter {
         userViews.add("/author");
         userViews.add("/cabinet");
         userViews.add("/logout");
+        userViews.add("/locale");
 
         moderViews = new ArrayList<>(userViews);
         moderViews.add("/category");
