@@ -18,7 +18,7 @@ class SaveCategoryAction implements Action {
         CategoryService service = new CategoryService();
         Category category = new Category();
 
-        category.setId(id.equals("") ? null : Integer.parseInt(id));
+        category.setId("".equals(id) ? null : Integer.parseInt(id));
         category.setTitle(title);
         category.setDescription(description);
 
@@ -35,12 +35,5 @@ class SaveCategoryAction implements Action {
         } catch (ServiceException e) {
             throw new ActionException("Could not save Category", e);
         }
-    }
-
-
-    private View forwardBackWithError(HttpServletRequest request, Category category) {
-        request.setAttribute("category", category);
-        request.setAttribute("error", "Check fields");
-        return new View("category");
     }
 }

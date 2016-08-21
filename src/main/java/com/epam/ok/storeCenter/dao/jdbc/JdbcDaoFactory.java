@@ -13,11 +13,10 @@ import java.sql.SQLException;
 public class JdbcDaoFactory extends DaoFactory {
 
     private Connection connection;
-    private DataSource pool;
 
     public JdbcDaoFactory() {
         try {
-            this.pool = ConnectionPool.getInstance();
+            DataSource pool = ConnectionPool.getInstance();
             this.connection = pool.getConnection();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -47,21 +46,6 @@ public class JdbcDaoFactory extends DaoFactory {
         } catch (SQLException e) {
             throw new DaoException("Could not close PooledConnection", e);
         }
-
-    }
-
-    @Override
-    public void startTransaction() throws DaoException {
-
-    }
-
-    @Override
-    public void commitTransaction() throws DaoException {
-
-    }
-
-    @Override
-    public void rollbackTransaction() throws DaoException {
 
     }
 }

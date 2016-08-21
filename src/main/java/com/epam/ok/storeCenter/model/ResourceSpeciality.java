@@ -5,9 +5,6 @@ public class ResourceSpeciality extends BaseEntity {
     private Integer resourceId;
     private Integer specialityId;
 
-    public ResourceSpeciality() {
-    }
-
     public Integer getSpecialityId() {
         return specialityId;
     }

@@ -20,10 +20,4 @@ public abstract class DaoFactory implements AutoCloseable {
 
     public abstract void close() throws DaoException;
 
-    public abstract void startTransaction() throws DaoException;
-
-    public abstract void commitTransaction() throws DaoException;
-
-    public abstract void rollbackTransaction() throws DaoException;
-
 }
