@@ -16,7 +16,7 @@ class SaveStatusAction implements Action {
         String description = request.getParameter("description");
         Status status = new Status();
 
-        status.setId(id.equals("") ? null : Integer.parseInt(id));
+        status.setId("".equals(id) ? null : Integer.parseInt(id));
         status.setTitle(title);
         status.setDescription(description);
 

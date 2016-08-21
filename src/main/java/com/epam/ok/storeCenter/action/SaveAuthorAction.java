@@ -18,7 +18,7 @@ class SaveAuthorAction implements Action {
         String patronymic = request.getParameter("patronymic");
         Author author = new Author();
 
-        author.setId(id.equals("") ? null : Integer.parseInt(id));
+        author.setId("".equals(id) ? null : Integer.parseInt(id));
         author.setLastname(lastname);
         author.setPatronymic(patronymic);
         author.setFirstname(firstname);

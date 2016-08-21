@@ -37,7 +37,7 @@ class SaveResourceAction implements Action {
 
         Resource resource = new Resource();
         try {
-            resource.setId(id.equals("") ? null : Integer.parseInt(id));
+            resource.setId("".equals(id) ? null : Integer.parseInt(id));
             resource.setTitle(title);
             resource.setCategory(new Category(Integer.parseInt(categoryId)));
             resource.setStatus(new Status(Integer.parseInt(statusId)));
@@ -71,9 +71,9 @@ class SaveResourceAction implements Action {
     }
 
     private DateTime getDate(String date) {
-        date += " 00:00:00";
+        String dateTime = date + " 00:00:00";
         DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
-        return formatter.parseDateTime(date);
+        return formatter.parseDateTime(dateTime);
     }
 
 

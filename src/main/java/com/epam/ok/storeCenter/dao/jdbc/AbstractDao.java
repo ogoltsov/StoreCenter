@@ -15,7 +15,7 @@ public abstract class AbstractDao<T extends BaseEntity> implements GenericDao<T>
     private static final String SELECT_FROM = "SELECT * FROM ";
     private static final String WHERE_ID = " WHERE id = ";
 
-    protected Connection connection;
+    Connection connection;
 
     protected abstract String getTableName();
 
@@ -46,16 +46,15 @@ public abstract class AbstractDao<T extends BaseEntity> implements GenericDao<T>
 
     @Override
     public T findByPK(Integer id) throws DaoException {
-        T object;
+        T object = null;
         try (Statement st = connection.createStatement()) {
             ResultSet rs = st.executeQuery(SELECT_FROM + getTableName() + WHERE_ID + id);
-            rs.next();
-            object = getObjectFromResultSet(rs);
+            if (rs.next())
+                object = getObjectFromResultSet(rs);
 
         } catch (SQLException e) {
             throw new DaoException("Could not find object by current id", e);
         }
-        logger.info("Find object by PK: " + object);
         return object;
     }
 
@@ -129,7 +128,7 @@ public abstract class AbstractDao<T extends BaseEntity> implements GenericDao<T>
     @Override
     public void delete(Integer id) throws DaoException {
         try (Statement st = connection.createStatement()) {
-            st.executeUpdate("UPDATE " + getTableName() + " SET isDelete=1" + WHERE_ID + id);
+            st.executeUpdate("UPDATE " + getTableName() + " SET isDelete = 1" + WHERE_ID + id);
         } catch (SQLException e) {
             throw new DaoException("Could not delete object by id", e);
         }

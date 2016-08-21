@@ -19,7 +19,7 @@ class SaveSpecialityAction implements Action {
             Speciality speciality = new Speciality();
 
 
-            speciality.setId(id.equals("") ? null : Integer.parseInt(id));
+            speciality.setId("".equals(id) ? null : Integer.parseInt(id));
             speciality.setTitle(title);
             speciality.setCode(code);
 

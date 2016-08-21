@@ -7,7 +7,6 @@ import com.epam.ok.storeCenter.model.Status;
 import org.joda.time.DateTime;
 
 import java.sql.*;
-import java.text.SimpleDateFormat;
 
 public class JdbcResourceDao extends AbstractDao<Resource> {
 
@@ -52,7 +51,6 @@ public class JdbcResourceDao extends AbstractDao<Resource> {
     protected void setVariablesForPreparedStatementExceptId(Resource resource, PreparedStatement ps) throws DaoException {
         try {
             ps.setString(1, resource.getTitle());
-//            ps.setString(2, getMysqlDate(resource.getDate()));
             ps.setTimestamp(2,  new Timestamp(resource.getDate().getMillis()));
             ps.setInt(3, resource.getStatus().getId());
             ps.setInt(4, resource.getCategory().getId());
