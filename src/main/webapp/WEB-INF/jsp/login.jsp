@@ -26,8 +26,8 @@
             <p class="loginError">${error}</p>
         </c:if>
         <form method="post" action="${pageContext.request.contextPath}/app/login">
-            <p><input type="text" name="email" value="k.ogoltsov@gmail.com" placeholder="${email}"></p>
-            <p><input type="password" name="password" value="Administrator" placeholder="${password}"></p>
+            <p><input type="text" name="email" value="" placeholder="${email}"></p>
+            <p><input type="password" name="password" value="" placeholder="${password}"></p>
             <p class="submit"><input type="submit" name="commit" value="${loginButton}"></p>
         </form>
     </div>

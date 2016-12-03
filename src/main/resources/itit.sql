@@ -1,3 +1,6 @@
+create database rCenter;
+use rCenter;
+
 DROP TABLE IF EXISTS ResourceAuthors;
 DROP TABLE IF EXISTS ResourceSpeciality;
 DROP TABLE IF EXISTS Resource;
@@ -5,6 +8,7 @@ DROP TABLE IF EXISTS Author;
 DROP TABLE IF EXISTS Status;
 DROP TABLE IF EXISTS Type;
 DROP TABLE IF EXISTS Speciality;
+DROP TABLE IF EXISTS Users;
 
 CREATE TABLE Status (
   id    INT AUTO_INCREMENT PRIMARY KEY,
@@ -67,6 +71,18 @@ CREATE TABLE ResourceAuthors (
 )
   CHARACTER SET utf8
   COLLATE utf8_general_ci;
+
+CREATE TABLE Users
+(
+  id INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  email VARCHAR(50) NOT NULL,
+  password VARCHAR(25) NOT NULL,
+  role VARCHAR(25) DEFAULT 'user' NOT NULL,
+  firstname VARCHAR(25) NOT NULL,
+  lastname VARCHAR(25) NOT NULL,
+  isDelete TINYINT(1) DEFAULT '0'
+);
+CREATE INDEX roleId ON Users (role)
 
 INSERT INTO Status (title) VALUES ("Проверка");
 INSERT INTO Status (title) VALUES ("Готов");
@@ -156,3 +172,8 @@ INSERT INTO ResourceAuthors (resId, authId) VALUES (4, 4);
 INSERT INTO ResourceAuthors (resId, authId) VALUES (2, 7);
 INSERT INTO ResourceAuthors (resId, authId) VALUES (1, 8);
 INSERT INTO ResourceAuthors (resId, authId) VALUES (5, 3);
+
+INSERT INTO Users (email, password, role, firstname, lastname)
+VALUES ("admin@gmail.com", "admin", "admin", "Administrator", "God");
+INSERT INTO Users (email, password, role, firstname, lastname)
+VALUES ("user@gmail.com", "userPassword", "user", "User", "Plain");
