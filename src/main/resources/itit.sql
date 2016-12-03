@@ -177,3 +177,5 @@ INSERT INTO Users (email, password, role, firstname, lastname)
 VALUES ("admin@gmail.com", "admin", "admin", "Administrator", "God");
 INSERT INTO Users (email, password, role, firstname, lastname)
 VALUES ("user@gmail.com", "userPassword", "user", "User", "Plain");
+INSERT INTO Users (email, password, role, firstname, lastname)
+VALUES ("moderator@gmail.com", "moderatorPassword", "moderator", "Moderator", "Moder");
