@@ -16,7 +16,7 @@ public class FrontControllerServlet extends HttpServlet {
     private static final Logger logger = Logger.getLogger(FrontControllerServlet.class);
 
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected String service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String actionName = req.getMethod() + req.getPathInfo();
         Action action = ActionFactory.getAction(actionName);
         View view;
