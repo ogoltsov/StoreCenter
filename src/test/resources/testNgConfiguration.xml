@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="DaoTestSute">
+    <test name="UserDaoTest">
+        <classes>
+            <class name="com.epam.action.ActionTestSute"/>
+            <class name="com.epam.action.GetPageActionTest"/>
+        </classes>
+    </test>
+</suite>
