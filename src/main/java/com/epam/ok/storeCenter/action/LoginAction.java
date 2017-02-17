@@ -3,13 +3,12 @@ package com.epam.ok.storeCenter.action;
 import com.epam.ok.storeCenter.model.User;
 import com.epam.ok.storeCenter.service.ServiceException;
 import com.epam.ok.storeCenter.service.UserService;
-import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 class LoginAction implements Action {
-    private static final Logger logger = Logger.getLogger(LoginAction.class);
+//    private static final Logger logger = Logger.getLogger(LoginAction.class);
 
     @Override
     public View execute(HttpServletRequest request, HttpServletResponse response) throws ActionException {
@@ -26,7 +25,7 @@ class LoginAction implements Action {
                 request.getSession(false).setAttribute("loggedUser", user);
                 result = new View("cabinet");
                 result.setRedirect(true);
-                logger.info("User is logged on: " + user.toString());
+//                logger.info("User is logged on: " + user.toString());
             } else {
                 result = returnToLoginViewWithError(request);
             }
